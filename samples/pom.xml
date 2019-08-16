@@ -14,6 +14,7 @@
     <modules>
         <module>sample-boot-druid</module>
         <module>sample-boot-swagger</module>
+        <module>sample-boot-mdc</module>
     </modules>
 
 
