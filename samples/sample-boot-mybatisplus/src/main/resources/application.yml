@@ -47,3 +47,10 @@ spring:
         login-username: admin
         # 登录密码
         login-password: 123456
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-value: 0
+      logic-not-delete-value: 1

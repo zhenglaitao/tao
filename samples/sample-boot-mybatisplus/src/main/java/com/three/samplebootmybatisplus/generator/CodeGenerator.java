@@ -1,10 +1,14 @@
 package com.three.samplebootmybatisplus.generator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableFill;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.util.ArrayList;
@@ -43,6 +47,10 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("zlt");
         gc.setOpen(false);
+        // xml生成BaseResultMap
+        gc.setBaseResultMap(false);
+        gc.setFileOverride(true);
+        gc.setDateType(DateType.ONLY_DATE);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
@@ -53,12 +61,16 @@ public class CodeGenerator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
+        dsc.setTypeConvert(new MySqlTypeConvert(){
+
+        });
         mpg.setDataSource(dsc);
 
         // 包配置
         final PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
         pc.setParent("com.three.samplebootmybatisplus");
+        // mapper.xml位置 = parent + this
         pc.setXml("mapper");
         mpg.setPackageInfo(pc);
 
@@ -116,16 +128,32 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        //strategy.setSuperEntityClass("com.three.samplebootmybatisplus.base.BaseEntity");
+        strategy.setSuperEntityClass("com.three.samplebootmybatisplus.base.BaseEntity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
         //strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
+        strategy.setSuperEntityColumns("version");
+        strategy.setSuperEntityColumns("valid");
+        strategy.setSuperEntityColumns("createTime");
+        strategy.setSuperEntityColumns("updateTime");
+        strategy.setVersionFieldName("version");
+        strategy.setLogicDeleteFieldName("valid");
+
+        List<TableFill> tableFillList = new ArrayList<>();
+        TableFill insertFill = new TableFill("create_time", FieldFill.INSERT);
+        TableFill updateFill = new TableFill("update_time", FieldFill.UPDATE);
+        tableFillList.add(insertFill);
+        tableFillList.add(updateFill);
+        strategy.setTableFillList(tableFillList);
+
+        strategy.setEntityTableFieldAnnotationEnable(true);
+
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(pc.getModuleName() + "_");
+        //strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         //mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
