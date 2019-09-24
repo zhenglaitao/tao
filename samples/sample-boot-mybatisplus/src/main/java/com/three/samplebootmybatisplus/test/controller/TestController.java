@@ -1,6 +1,8 @@
 package com.three.samplebootmybatisplus.test.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.three.samplebootmybatisplus.test.entity.Test;
 import com.three.samplebootmybatisplus.test.service.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-
-
 
     @Autowired
     private ITestService testService;
@@ -55,6 +55,13 @@ public class TestController {
     @GetMapping("/list")
     public List<Test> testList(){
         return testService.list();
+    }
+
+    @GetMapping("/page")
+    public IPage<Test> page(){
+        Page<Test> page = new Page<>();
+        IPage<Test> record = testService.page(page, null);
+        return record;
     }
 }
 

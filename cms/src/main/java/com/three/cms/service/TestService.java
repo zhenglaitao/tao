@@ -2,7 +2,8 @@ package com.three.cms.service;
 
 import com.three.cms.entity.Test;
 import java.util.List;
-public interface TestService{
+
+public interface TestService {
 
 
     int deleteByPrimaryKey(Integer id);
@@ -26,3 +27,4 @@ public interface TestService{
     int batchInsert(List<Test> list);
 
 }
+

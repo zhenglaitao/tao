@@ -6,8 +6,9 @@ import com.three.cms.entity.Test;
 import java.util.List;
 import com.three.cms.mapper.TestMapper;
 import com.three.cms.service.TestService;
+
 @Service
-public class TestServiceImpl implements TestService{
+public class TestServiceImpl implements TestService {
 
     @Resource
     private TestMapper testMapper;
@@ -63,3 +64,4 @@ public class TestServiceImpl implements TestService{
     }
 
 }
+

@@ -134,11 +134,7 @@ public class CodeGenerator {
         // 公共父类
         //strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
-        strategy.setSuperEntityColumns("version");
-        strategy.setSuperEntityColumns("valid");
-        strategy.setSuperEntityColumns("createTime");
-        strategy.setSuperEntityColumns("updateTime");
+        strategy.setSuperEntityColumns(new String[]{"id","valid","create_time","update_time"});
         strategy.setVersionFieldName("version");
         strategy.setLogicDeleteFieldName("valid");
 
